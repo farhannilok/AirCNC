@@ -13,7 +13,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kqr4p9m.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -33,7 +33,7 @@ async function run() {
         // Send a ping to confirm a successful connection
         await client.db('admin').command({ ping: 1 });
         // save user email and role in DB
-        app.put('/users/:email', async (req, res) => {
+        app.put('/users/:email', async(req, res) => {
             const email = req.params.email;
             const user = req.body;
             const filter = { email: email };
@@ -41,7 +41,30 @@ async function run() {
             const updateDoc = {
                 $set: user
             }
-            const result = usersCollection.updateOne(filter, updateDoc, options)
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result)
+        })
+
+        // get user role 
+        app.get('/users/:email', async(req, res) => {
+            const email = req.params.email;
+            const query = {email: email};
+            const result = await usersCollection.findOne(query);
+            res.send(result)
+        })
+
+        // get all rooms data 
+        app.get('/rooms', async(req, res) => {
+            const result = await roomsCollection.find().toArray();
+            res.send(result)
+        })
+
+        // get individual room data 
+        app.get('/room/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await roomsCollection.findOne(query)
+            res.send(result);
         })
         console.log(
             'Pinged your deployment. You successfully connected to MongoDB!'
