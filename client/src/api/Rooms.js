@@ -12,3 +12,18 @@ export const getSingleRoom = async id => {
     const data = response.json()
     return data
 }
+
+
+// api creating rooms for host
+export const postRoom = async roomData => {
+    const url = 'http://localhost:5000/post-rooms'
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(roomData)
+    })
+    const data = await response.json();
+    return data
+}

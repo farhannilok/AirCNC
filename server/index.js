@@ -45,6 +45,54 @@ async function run() {
             res.send(result)
         })
 
+        // post room api for host
+        app.post('/post-rooms', async(req, res) => {
+            const roomData = req.body;
+            console.log(roomData)
+            const result = await roomsCollection.insertOne(roomData);
+            res.send(result)
+        })
+
+        // get booking data for guest
+        app.get('/bookings', async(req, res) => {
+            const email = req.query.email;
+            if(!email){
+                res.send([{error: 'Forbidden'}])
+            }
+            const query = {'guest.email': email}
+            const result = await bookingsCollection.find(query).toArray();
+            res.send(result)
+        })
+
+        // delete booking
+        app.delete('/bookings/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await bookingsCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // save booking on database
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body.bookingData;
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result)
+        })
+
+        // update status of room weather it is booked or not
+        app.patch('/rooms/status/:id', async(req, res) =>{
+            const id = req.params.id;
+            const status = req.body.status;
+            const filter = {_id: new ObjectId(id)}
+            const booking = {
+                $set: {
+                    booked: status
+                }
+            }
+            const update = await roomsCollection.updateOne(filter, booking);
+            res.send(update)
+        })
+
         // get user role 
         app.get('/users/:email', async(req, res) => {
             const email = req.params.email;

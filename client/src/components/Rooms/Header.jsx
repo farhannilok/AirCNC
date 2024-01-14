@@ -5,8 +5,8 @@ const Header = ({roomData}) => {
     return (
         <>
             <Heading
-                title={roomData?.location}
-                subtitle="Sidemen, Indonesia"
+                title={roomData?.title}
+                subtitle={roomData?.location}
             />
             <div className='w-full md:h-[60vh] overflow-hidden rounded-xl'>
                 <img className='object-cover w-full' src={roomData.image} alt="header img" />

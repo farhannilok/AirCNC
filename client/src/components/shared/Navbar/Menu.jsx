@@ -8,7 +8,7 @@ import { becomeHost } from '../../../api/Auth'
 import toast from 'react-hot-toast'
 
 const Menu = () => {
-    const { user, logOut, role, setRole } = useContext(AuthContext)
+    const { user, setUser, logOut, role, setRole } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState(false)
     const [modal, setModal] = useState(false)
     const modalHandler = email => {
@@ -29,13 +29,22 @@ const Menu = () => {
     const toggleOpen = useCallback(() => {
         setIsOpen(value => !value)
     }, [])
+
+    const handleSignOut = () => {
+        logOut()
+        .then(res => {
+            setRole(null)
+            toast.success('User Signed out');
+        })
+        .catch(err => toast.error('Uh Oh something wrong happend'))
+    }
     return (
         <div className='relative'>
             <div className='flex flex-row items-center gap-3'>
                 <div className='hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
                     {/* role na thakle button ta render hobe ba user host na hole button dekhabe */}
                     {
-                        !role 
+                        !role
                         &&
                         <button
                             className='cursor-pointer'
@@ -43,7 +52,7 @@ const Menu = () => {
                             onClick={() => setModal(true)}
                         >
                             AirCNC your home
-                        </button> 
+                        </button>
                     }
                 </div>
                 <div
@@ -66,15 +75,22 @@ const Menu = () => {
                             Home
                         </Link>
                         {user ? (
-                            <div
-                                onClick={() => {
-                                    setRole(null)
-                                    logOut
-                                }}
-                                className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
-                            >
-                                Logout
-                            </div>
+                            <>
+                                <Link
+                                    to='/dashboard'
+                                    className='px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                                >
+                                    Dashboard
+                                </Link>
+                                <div
+                                    onClick={
+                                        handleSignOut
+                                    }
+                                    className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
+                                >
+                                    Logout
+                                </div>
+                            </>
                         ) : (
                             <>
                                 <Link

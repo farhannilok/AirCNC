@@ -11,3 +11,4 @@ export const imageUpload = async image => {
     const data = await response.json();
     return data;
 }
+

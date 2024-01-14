@@ -31,7 +31,6 @@ export const becomeHost = email => {
 }
 
 // get user role
-
 export const getRole = async email => {
     const request = await fetch(`http://localhost:5000/users/${email}`)
     const role = await request.json();

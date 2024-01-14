@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import AddRoomForm from '../../components/Forms/AddRoomForm';
 import { imageUpload } from '../../api/Utils';
 import { AuthContext } from '../../providers/AuthProvider';
-
+import { postRoom } from '../../api/Rooms';
+import {toast} from 'react-hot-toast';
 const AddRoom = () => {
     const [loading, setLoading] = useState(false);
     const { user } = useContext(AuthContext);
@@ -49,14 +50,19 @@ const AddRoom = () => {
                         email: user?.email
                     }
                 }
+                postRoom(roomData)
+                .then(data => {
+                    toast.success('Room posted successfully.')
+                })
+                .catch(err => toast.error('Something went wrong'))
                 console.log(data);
                 setLoading(false);
+                form.reset()
             })
             .catch(err => {
                 console.log(err.message);
                 setLoading(false);
             })
-        console.log(location);
 
     }
     const handleImageChange = image => {
