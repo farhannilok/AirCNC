@@ -4,9 +4,11 @@ import { imageUpload } from '../../api/Utils';
 import { AuthContext } from '../../providers/AuthProvider';
 import { postRoom } from '../../api/Rooms';
 import {toast} from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 const AddRoom = () => {
     const [loading, setLoading] = useState(false);
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate()
     const [dates, setDates] = useState(
         {
             startDate: new Date(),
@@ -30,13 +32,14 @@ const AddRoom = () => {
         const bedrooms = form.bedrooms.value;
         const bathrooms = form.bathrooms.value;
         const description = form.description.value;
-
+        setUploadButtonText('Uploading...')
         imageUpload(image)
             .then(data => {
                 const roomData = {
                     location,
                     title,
                     from,
+                    category,
                     to,
                     price: parseFloat(price),
                     totalGuest,
@@ -52,7 +55,10 @@ const AddRoom = () => {
                 }
                 postRoom(roomData)
                 .then(data => {
+                    setLoading(false)
+                    setUploadButtonText('Uploaded!')
                     toast.success('Room posted successfully.')
+                    navigate('/')
                 })
                 .catch(err => toast.error('Something went wrong'))
                 console.log(data);

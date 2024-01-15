@@ -27,3 +27,22 @@ export const postRoom = async roomData => {
     const data = await response.json();
     return data
 }
+
+// get host rooms
+export const getHostRooms = async email => {
+    const response = await fetch(`http://localhost:5000/rooms/${email}`)
+    const data = response.json()
+    return data
+}
+
+// delete host room
+export const deleteHostRooms = async id => {
+    const response = await fetch(`http://localhost:5000/rooms/${id}`,{
+        method: 'DELETE',
+        headers:{
+            'content-type': 'application/json'
+        }
+    })
+    const data = response.json()
+    return data
+}

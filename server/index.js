@@ -72,6 +72,14 @@ async function run() {
             res.send(result);
         })
 
+        // delete host rooms
+        app.delete('/rooms/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await roomsCollection.deleteOne(query)
+            res.send(result)
+        })
+
         // save booking on database
         app.post('/bookings', async (req, res) => {
             const booking = req.body.bookingData;
@@ -104,6 +112,14 @@ async function run() {
         // get all rooms data 
         app.get('/rooms', async(req, res) => {
             const result = await roomsCollection.find().toArray();
+            res.send(result)
+        })
+
+        // get host rooms
+        app.get('/rooms/:email', async(req, res) => {
+            const email = req.params.email;
+            const query = {'host.email': email};
+            const result = await roomsCollection.find(query).toArray();
             res.send(result)
         })
 
