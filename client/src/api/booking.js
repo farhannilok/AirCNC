@@ -27,7 +27,7 @@ export const updateStatus = async (id, status) => {
     return data
 }
 
-// get booking data 
+// get booking data for guest
 export const getMyBooking = async (email) => {
     const response = await fetch(`http://localhost:5000/bookings?email=${email}`)
     const data = await response.json()
