@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000;
 
 // middleware
 const corsOptions = {
-  origin: 'https://air-cnc-588ed.web.app/',
+  origin: ['https://air-cnc-588ed.web.app', 'http://localhost:5173'],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -14,7 +14,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kqr4p9m.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kqr4p9m.mongodb.net/?retryWrites=true&w=majority&connectTimeoutMS=5000&maxPoolSize=10`;
 
 const client = new MongoClient(uri, {
   serverApi: {
