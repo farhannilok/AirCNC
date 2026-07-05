@@ -5,7 +5,7 @@ import { AuthContext } from '../../../providers/AuthProvider'
 import { Link } from 'react-router-dom'
 import HostModal from '../../Modal/HostRequestModal'
 import { becomeHost } from '../../../api/Auth'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 
 const Menu = () => {
     const { user, setUser, logOut, role, setRole } = useContext(AuthContext)
@@ -32,16 +32,16 @@ const Menu = () => {
 
     const handleSignOut = () => {
         logOut()
-        .then(res => {
-            setRole(null)
-            toast.success('User Signed out');
-        })
-        .catch(err => toast.error('Uh Oh something wrong happend'))
+            .then(res => {
+                setRole(null)
+                toast.success('User Signed out');
+            })
+            .catch(err => toast.error('Uh Oh something wrong happend'))
     }
     return (
         <div className='relative'>
             <div className='flex flex-row items-center gap-3'>
-                <div className='hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
+                <div className='hidden md:block text-sm font-semibold py-3 px-8 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
                     {/* role na thakle button ta render hobe ba user host na hole button dekhabe */}
                     {
                         !role
